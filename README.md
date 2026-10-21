@@ -53,17 +53,17 @@ CivicFix/
 
 **1. Clone the repository**
 
-Replace `YOUR_USERNAME` and `YOUR_REPOSITORY` with your actual GitHub details.
+ `https://github.com/Nikhildeveloper0001/CivicFix-ImproveYourNeighbourhood/commits?author=Nikhildeveloper0001` and `https://github.com/Nikhildeveloper0001/CivicFix-ImproveYourNeighbourhood/tree/main` .
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/NikhilDeveloper0001/CivicFix-ImproveYourNeighbourhood.
 ```
 
 **2. Open the project**
 
 ```bash
-cd YOUR_REPOSITORY
-code .
+cd 
+code . CivicFix-ImproveYourNeighbourhood      
 ```
 
 Alternatively, download the repository as a ZIP file and open the extracted folder in VS Code.
@@ -87,8 +87,8 @@ CivicFix uses Supabase for backend functionality and user authentication.
 Use the configuration pattern appropriate to your existing code:
 
 ```javascript
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+  const SUPABASE_URL = "https://qvaapvsuoundibrmbgzj.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_prT6hQR1ORGyvxiIHD-53g_IDUbABNW";
 ```
 
 **Security note:** Never expose a Supabase `service_role` key or secret key in frontend code. Use only the appropriate publishable key in the browser, and configure Row Level Security (RLS) policies to protect user data.
@@ -147,15 +147,11 @@ Contributions, suggestions, and bug reports are welcome.
 4. Test the application.
 5. Submit a pull request describing your changes.
 
-## 📄 License
-
-No license has been specified yet. Add a suitable open-source license, such as the MIT License, if you intend to allow others to reuse and modify the project.
-
 ## 👨‍💻 Author
 
-**Nikhil Dwivedi**
+Nikhil Dwivedi
 
-GitHub: [YOUR_GITHUB_USERNAME](https://github.com/YOUR_GITHUB_USERNAME)
+GitHub: [Nikhildeveloper0001](https://github.com/Nikhildeveloper0001)
 
 ---
 
