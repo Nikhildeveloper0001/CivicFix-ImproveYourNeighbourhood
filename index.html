@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CivicFix | Improve Your Neighbourhood</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html#home" class="logo" aria-label="CivicFix home">
+                <span class="logo-icon" aria-hidden="true">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <i class="fa-solid fa-check logo-check"></i>
+                </span>
+                <span class="brand-name">Civic<span>Fix</span></span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#issues">Explore Issues</a>
+                <a href="index.html#howItWorks">How It Works</a>
+                <a href="index.html#issues" id="myReportsLink">My Reports</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- The user icon opens the account menu, or Sign In / Sign Up when logged out. -->
+                <button class="btn btn-user-icon" id="accountDetailsButton" type="button"
+                    aria-label="Open account menu or sign in" title="Account menu / Sign In">
+                    <span class="account-avatar" aria-hidden="true"><img><i class="fa-solid fa-circle-user"></i></span>
+                </button>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO -->
+
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <span class="hero-tag">
+                    Civic services • Community reporting • Delhi
+                </span>
+
+                <h1>
+                    Make Your Neighbourhood Better.
+                    <br>
+                    One Report at a Time.
+                </h1>
+
+                <p>
+                    Report potholes, broken streetlights, garbage accumulation,
+                    and other local issues. Help your community identify
+                    problems and follow their progress.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="btn btn-green" data-open-report>
+                        <i class="fa-solid fa-plus"></i> Report an Issue
+                    </button>
+
+                    <a href="#issues" class="btn btn-outline">
+                        Explore Issues <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- STATISTICS -->
+
+        <section class="stats" aria-label="Issue statistics">
+
+            <article class="stat-card">
+                <div class="stat-icon blue" aria-hidden="true"><i class="fa-solid fa-database"></i></div>
+                <div>
+                    <h3 id="totalCount">4</h3>
+                    <p>Total Reports</p>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon orange" aria-hidden="true"><i class="fa-solid fa-exclamation"></i></div>
+                <div>
+                    <h3 id="openCount">2</h3>
+                    <p>Open Issues</p>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon purple" aria-hidden="true"><i class="fa-solid fa-spinner"></i></div>
+                <div>
+                    <h3 id="progressCount">1</h3>
+                    <p>In Progress</p>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon green" aria-hidden="true"><i class="fa-solid fa-check-double"></i></div>
+                <div>
+                    <h3 id="resolvedCount">1</h3>
+                    <p>Resolved</p>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- REPORT FORM -->
+
+        <section class="report-section" id="report">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Report a Civic Issue</h2>
+                    <p>Provide accurate details so the issue can be understood.</p>
+                </div>
+            </div>
+
+            <div class="form-card">
+
+                <div class="notice">
+                    Demo mode: reports are stored only in this browser.
+                    Submitting a report does not notify municipal authorities.
+                </div>
+
+                <form id="issueForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="issueTitle">Issue Title *</label>
+                            <input class="form-control" type="text" id="issueTitle" name="title" maxlength="100"
+                                placeholder="e.g. Pothole near main market" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueCategory">Category *</label>
+
+                            <select class="form-control" id="issueCategory" name="category" required>
+                                <option value="">Select a category</option>
+                                <option value="Pothole">Pothole</option>
+                                <option value="Streetlight">Streetlight</option>
+                                <option value="Garbage">Garbage</option>
+                                <option value="Water Leakage">Water Leakage</option>
+                                <option value="Footpath">Damaged Footpath</option>
+                                <option value="Sanitation">Sanitation</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="issueDescription">Description *</label>
+                            <textarea class="form-control" id="issueDescription" name="description" minlength="10"
+                                maxlength="1000" placeholder="Describe the problem and its impact..."
+                                required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueLocation">Location *</label>
+                            <input class="form-control" type="text" id="issueLocation" name="location" maxlength="200"
+                                placeholder="Enter street or locality" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueSeverity">Severity *</label>
+                            <select class="form-control" id="issueSeverity" name="severity" required>
+                                <option value="">Select severity</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueDate">Date Observed *</label>
+                            <input class="form-control" type="date" id="issueDate" name="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issuePhoto">Upload Photograph (Compulsory)</label>
+                            <input class="form-control" type="file" id="issuePhoto" name="photo"
+                                accept="image/jpeg,image/png,image/webp">
+                            <p class="form-help">
+                                Optional. JPG, PNG or WebP. Maximum 2 MB.
+                            </p>
+                            <img class="image-preview" id="imagePreview" alt="Selected issue photograph preview">
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <button type="button" class="btn btn-outline" id="cancelReport">
+                            Cancel
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Submit Report
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- ISSUES -->
+
+        <section class="section" id="issues">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Explore Local Issues</h2>
+                    <p>Discover reported problems in the community.</p>
+                </div>
+
+                <a href="#issues" class="text-link" id="resetFilters">
+                    Reset Filters <i class="fa-solid fa-rotate-right"></i>
+                </a>
+            </div>
+
+            <div class="filters">
+
+                <div class="search-box">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="search" id="searchInput" placeholder="Search by issue or location..."
+                        aria-label="Search issues">
+                </div>
+
+                <select id="categoryFilter" aria-label="Filter by category">
+                    <option value="all">All Categories</option>
+                    <option value="Pothole">Pothole</option>
+                    <option value="Streetlight">Streetlight</option>
+                    <option value="Garbage">Garbage</option>
+                    <option value="Water Leakage">Water Leakage</option>
+                    <option value="Footpath">Footpath</option>
+                    <option value="Sanitation">Sanitation</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <select id="statusFilter" aria-label="Filter by status">
+                    <option value="all">All Statuses</option>
+                    <option value="Reported">Reported</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+
+            </div>
+
+            <div class="issue-grid" id="issueGrid"></div>
+
+        </section>
+
+        <!-- HOW IT WORKS -->
+
+        <section class="section" id="howItWorks">
+
+            <div class="section-heading">
+                <div>
+                    <h2>How CivicFix Works</h2>
+                    <p>Three simple steps to help identify local problems.</p>
+                </div>
+            </div>
+
+            <div class="steps">
+
+                <article class="step-card">
+                    <div class="step-number"><i class="fa-solid fa-camera"></i></div>
+                    <h3>1. Report</h3>
+                    <p>
+                        Describe the problem, add its location, and attach
+                        a photograph if available.
+                    </p>
+                </article>
+
+                <article class="step-card">
+                    <div class="step-number"><i class="fa-solid fa-person-running"></i></div>
+                    <h3>2. Track</h3>
+                    <p>
+                        Find your report in the issue list and follow its
+                        displayed status.
+                    </p>
+                </article>
+
+                <article class="step-card">
+                    <div class="step-number"><i class="fa-solid fa-circle-check"></i></div>
+                    <h3>3. Verify</h3>
+                    <p>
+                        Check whether a reported problem appears to have
+                        been resolved.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <div class="container footer-content">
+
+            <div>
+                <a class="logo" aria-label="CivicFix home">
+                    <span class="logo-icon" aria-hidden="true">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <i class="fa-solid fa-check logo-check"></i>
+                    </span>
+                    <span class="brand-name">Civic<span>Fix</span></span>
+                </a>
+                <p>Your City. Your Voice. Your Impact.</p>
+            </div>
+
+            <p class="footer-note">
+                CivicFix is a demonstration project. Sample reports are
+                illustrative and are not verified municipal records.
+                <br>Developed By @ Nikhil Dwivedi.
+            </p>
+
+            <p>© <span id="currentYear"></span> CivicFix</p>
+            <span><a href="#"><i class="fa-brands fa-linkedin" class="fa-brands"
+                        style="color: blueviolet; font-size: 27px;"></i></a> <a href="#"><i class="fa-brands fa-github"
+                        class="fa-brands" style="color: black; font-size: 27px;"></i></a> <a href="#"><i
+                        class="fa-solid fa-at" class="fa-brands" style="color: black; font-size: 27px;"></i></a></span>
+
+        </div>
+    </footer>
+
+    <!-- USER SIDEBAR -->
+    <div class="user-menu-overlay" id="userMenuOverlay" aria-hidden="true">
+
+        <aside class="user-sidebar" role="dialog" aria-modal="true" aria-labelledby="userMenuName">
+
+            <button class="user-menu-close" id="userMenuClose" type="button" aria-label="Close account menu">×</button>
+
+            <div class="user-sidebar-profile">
+                <div class="user-sidebar-avatar" aria-hidden="true"><i class="fa-solid fa-circle-user"
+                        id="sidebarDefaultIcon"></i>
+                    <img id="sidebarProfilePic" alt="profile Picture" hidden>
+                </div>
+
+                <div class="user-sidebar-identity">
+                    <strong id="userMenuName">CivicFix User</strong>
+                    <span id="userMenuEmail">Sign in to view your account</span>
+                </div>
+            </div>
+
+            <nav class="user-sidebar-nav" aria-label="Account menu">
+                <a href="index.html#home" id="userMenuDashboard"><span aria-hidden="true"><i
+                            class="fa-solid fa-tachograph-digital"></i></span> Dashboard</a>
+                <a href="index.html#issues" id="userMenuReports"><span aria-hidden="true"><i
+                            class="fa-solid fa-database"></i></span> My Reports</a>
+                <a href="#profile" id="userMenuProfile"><span aria-hidden="true"><i
+                            class="fa-solid fa-circle-user"></i></span> Profile</a>
+                <a href="#settings" id="userMenuSettings"><span aria-hidden="true"><i
+                            class="fa-solid fa-gear"></i></span> Settings</a>
+            </nav>
+
+            <button class="user-sidebar-signout" id="userMenuSignOut" type="button"><span aria-hidden="true"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i></span> Sign Out</button>
+        </aside>
+    </div>
+
+    <!-- ACCOUNT DETAILS -->
+    <div class="account-overlay" id="accountOverlay" aria-hidden="true">
+        <section class="account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+            <button class="auth-close" id="accountClose" type="button" aria-label="Close dialog">×</button>
+            <h2 id="accountTitle">Account Details</h2>
+            <p class="auth-subtitle">Your CivicFix account</p>
+            <div class="account-info-row"><span>Full name</span><strong id="accountNameValue"></strong></div>
+            <div class="account-info-row"><span>Email address</span><strong id="accountEmailValue"></strong></div>
+            <button class="btn btn-primary account-signout" id="accountSignOut" type="button">Sign Out</button>
+        </section>
+    </div>
+
+    <!-- SIGN IN / SIGN UP MODAL -->
+    <div class="auth-overlay" id="authOverlay" aria-hidden="true">
+        <section class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+            <button class="auth-close" id="authClose" type="button" aria-label="Close dialog">×</button>
+            <div class="auth-brand"><a href="index.html#home" class="logo" aria-label="CivicFix home">
+                    <span class="logo-icon" aria-hidden="true">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <i class="fa-solid fa-check logo-check"></i>
+                    </span>
+                    <span class="brand-name">Civic<span>Fix</span></span>
+                </a></div>
+            <h2 id="authTitle">Welcome back</h2>
+            <p class="auth-subtitle" id="authSubtitle">Sign in to your CivicFix account.</p>
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" id="authSignInTab">Sign In</button>
+                <button type="button" class="auth-tab" id="authSignUpTab">Sign Up</button>
+            </div>
+            <form id="authForm">
+                <div class="form-group" id="authNameGroup" hidden>
+                    <label for="authName">Full Name</label>
+                    <input class="form-control" type="text" id="authName" autocomplete="name"
+                        placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="authEmail">Email Address</label>
+                    <input class="form-control" type="email" id="authEmail" autocomplete="email"
+                        placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input class="form-control" type="password" id="authPassword" autocomplete="current-password"
+                        minlength="6" placeholder="At least 6 characters" required>
+                </div>
+                <button class="btn btn-primary auth-submit" id="authSubmit" type="submit">Sign In</button>
+            </form>
+            <p class="auth-note">Secure account authentication is provided by Supabase.</p>
+        </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Settings details -->
+    <section class="settings-page" id="settingsPage" hidden>
+        <div class="settings-card">
+            <h2>Account Settings</h2>
+            <p>Manage your personal information</p>
+            <!-- Profile picture -->
+            <div class="profile-picture-section">
+                <img id="profilePreview">
+                <label for="profilePicture">Change Profile Picture</label>
+                <input type="file" id="profilePicture" accept="image/png, image/jpeg, image/webp">
+                <p class="form-help">
+                    Optional. JPG, PNG or WebP. Maximum 2 MB.
+                </p>
+            </div>
+            <!-- profile form -->
+            <form id="settingsForm">
+                <label for="ProfileName">Full Name *</label>
+                <input type="text" id="ProfileName" maxlength="60" class="form-control" required
+                    placeholder="Enter your name">
+                <label for="profileDob">Date of Birth *</label>
+                <input id="profileDob" class="form-control" type="date" name="date">
+                <label for="ProfileGender">Gender *</label>
+                <select id="ProfileGender" class="form-control">
+                    <option value="" selected disabled>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="profileBio">Bio</label>
+                <textarea id="profileBio" maxlength="250" rows="2" placeholder="Write Somethings about yourself..."
+                    class="form-control"></textarea>
+                <div class="settings-buttons">
+                    <button type="submit" class="btn btn-primary" id="saveSettings">Save Changes</button>
+                    <button type="button" id="cancelSettings" class="btn btn-outline">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+    <script src="civicfix-supabase.js"></script>
+</body>
+
+</html>

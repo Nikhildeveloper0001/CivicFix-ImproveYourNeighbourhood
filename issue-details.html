@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue Details | CivicFix</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ===== CIVICFIX ISSUE DETAILS — MODERN UI ===== */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 82px;
+    }
+
+    body {
+      margin: 0;
+      color: #18283b;
+      background: #f5f7fb;
+      font-family: 'Inter', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, .94);
+      border-bottom: 1px solid #e3e9f1;
+      box-shadow: 0 4px 18px rgba(20, 40, 70, .045);
+      backdrop-filter: blur(14px);
+    }
+
+    header .container.navbar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      gap: 4px !important;
+    }
+
+    .logo-icon {
+      width: 32px !important;
+      height: 36px !important;
+      flex: 0 0 32px !important;
+      font-size: 34px !important;
+    }
+
+    .logo-icon .logo-check {
+      width: 14px !important;
+      height: 14px !important;
+      font-size: 9px !important;
+    }
+
+    .brand-name {
+      font-size: 30px !important;
+      letter-spacing: -1.1px !important;
+    }
+
+    .details-wrap {
+      width: min(1000px, calc(100% - 40px));
+      max-width: 1000px;
+      margin: 30px auto 64px;
+      padding: 0;
+    }
+
+    .details-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding: 10px 14px;
+      color: #1556a8;
+      background: #fff;
+      border: 1px solid #dfe7f0;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease, border-color .2s ease;
+    }
+
+    .details-back:hover {
+      background: #edf4ff;
+      border-color: #c9d9ec;
+      transform: translateX(-2px);
+    }
+
+    .details-card {
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      border-radius: 18px;
+      box-shadow: 0 12px 34px rgba(22, 45, 75, .075);
+    }
+
+    .details-photo-wrap {
+      position: relative;
+      background: #eaf0f7;
+      overflow: hidden;
+    }
+
+    .details-photo {
+      display: block;
+      width: 100%;
+      max-height: 470px;
+      min-height: 220px;
+      object-fit: cover;
+      background: #eaf0f7;
+      cursor: zoom-in;
+      transition: transform .35s ease, filter .25s ease;
+    }
+
+    .details-photo:hover {
+      filter: brightness(.94);
+    }
+
+    .details-photo-hint {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      color: #fff;
+      background: rgba(13, 31, 52, .82);
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+
+    .details-content {
+      padding: clamp(20px, 4vw, 36px);
+    }
+
+    .details-content h1 {
+      margin: 10px 0 10px;
+      color: #172b43;
+      font-size: clamp(25px, 4vw, 36px);
+      line-height: 1.18;
+      letter-spacing: -1px;
+      overflow-wrap: anywhere;
+    }
+
+    .details-description {
+      margin: 20px 0 26px;
+      color: #526276;
+      font-size: 14px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .details-grid {
+      gap: 14px;
+    }
+
+    .detail-field {
+      min-width: 0;
+      padding: 16px;
+      background: #f8fafd;
+      border: 1px solid #e4eaf2;
+      border-radius: 12px;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .detail-field:hover {
+      background: #f3f7fc;
+      border-color: #d4e0ee;
+    }
+
+    .detail-field span {
+      display: block;
+      margin-bottom: 7px;
+      color: #728197;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .55px;
+      text-transform: uppercase;
+    }
+
+    .detail-field strong {
+      color: #263a51;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .details-error {
+      padding: 28px;
+      color: #53657a;
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(22, 45, 75, .045);
+    }
+
+    .details-viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(5, 14, 27, .92);
+      backdrop-filter: blur(7px);
+    }
+
+    .details-viewer.is-open {
+      display: flex;
+    }
+
+    .details-viewer img {
+      display: block;
+      max-width: min(100%, 1500px);
+      max-height: calc(100vh - 72px);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, .4);
+    }
+
+    .details-viewer-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .details-viewer-close:hover {
+      background: rgba(255, 255, 255, .23);
+    }
+
+    .details-viewer-caption {
+      position: absolute;
+      left: 20px;
+      bottom: 16px;
+      color: rgba(255, 255, 255, .78);
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      header .container.navbar {
+        min-height: 64px;
+      }
+
+      .details-wrap {
+        width: calc(100% - 24px);
+        margin: 20px auto 42px;
+      }
+
+      .details-card {
+        border-radius: 14px;
+      }
+
+      .details-photo {
+        min-height: 190px;
+        max-height: 330px;
+      }
+
+      .details-content {
+        padding: 20px;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .details-viewer {
+        padding: 12px;
+      }
+
+      .details-viewer img {
+        max-height: calc(100vh - 100px);
+      }
+
+      .details-viewer-close {
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container navbar">
+      <a href="index.html#home" class="logo" aria-label="CivicFix home">
+        <span class="logo-icon" aria-hidden="true">
+          <i class="fa-solid fa-location-dot"></i>
+          <i class="fa-solid fa-check logo-check"></i>
+        </span>
+        <span class="brand-name">Civic<span>Fix</span></span>
+      </a>
+    </div>
+  </header>
+  <main class="details-wrap" id="issueDetailsMain">
+    <div class="details-error">Loading issue details…</div>
+  </main>
+
+  <div class="details-viewer" id="detailsImageViewer" role="dialog" aria-modal="true"
+    aria-label="Full-size issue photo">
+    <button class="details-viewer-close" id="detailsViewerClose" type="button" aria-label="Close full-size photo">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <img id="detailsViewerImage" alt="Full-size issue photo">
+    <div class="details-viewer-caption">Press Esc or click outside the photo to close</div>
+  </div>
+  <script>
+    (function () {
+      const viewer = document.getElementById('detailsImageViewer');
+      const viewerImage = document.getElementById('detailsViewerImage');
+      const closeButton = document.getElementById('detailsViewerClose');
+
+      function closeViewer() {
+        viewer.classList.remove('is-open');
+        viewerImage.removeAttribute('src');
+        document.body.style.overflow = '';
+      }
+
+      document.addEventListener('click', function (event) {
+        const photo = event.target.closest('.details-photo');
+        if (photo) {
+          const imageUrl = photo.currentSrc || photo.src;
+          if (!imageUrl) return;
+          viewerImage.src = imageUrl;
+          viewerImage.alt = photo.alt || 'Full-size issue photo';
+          viewer.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+          return;
+        }
+
+        if (event.target === viewer || event.target === closeButton || event.target.closest('#detailsViewerClose')) {
+          closeViewer();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && viewer.classList.contains('is-open')) closeViewer();
+      });
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="issue-details.js"></script>
+</body>
+
+</html>
