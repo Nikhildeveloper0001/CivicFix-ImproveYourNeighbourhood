@@ -1,6 +1,0 @@
--- CivicFix admin setup note
--- Normal users cannot update report status. For production, grant app_metadata.role='admin'
--- to a trusted user from Supabase Dashboard / server-side Admin API only.
--- NEVER put the service_role key in browser JavaScript.
--- After setting the role, sign out and sign in again so the JWT contains the updated claim.
--- This file intentionally does not promote any user automatically.
