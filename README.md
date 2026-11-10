@@ -1,5 +1,5 @@
 # CivicFix-ImproveYourNeighbourhood
-  https://civicfix-improveyourneighbourhood.netlify.app/
+  https://civicfix-project.vercel.app
   # 🏙️ CivicFix — Smart Civic Issue Reporting Platform
 
 **CivicFix** is a web-based civic issue reporting platform designed to help citizens report local problems and make their communities cleaner, safer, and better maintained.
