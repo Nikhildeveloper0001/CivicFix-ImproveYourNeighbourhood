@@ -9,6 +9,32 @@
 
   const byId = id => document.getElementById(id);
   const toast = message => typeof window.showToast === "function" ? window.showToast(message) : alert(message);
+
+  function setButtonLoading(button, loadingText) {
+    if (!button) return;
+
+    if (loadingText) {
+        if (button.disabled) return;
+
+        button.dataset.originalHtml = button.innerHTML;
+        button.disabled = true;
+        button.classList.add("is-loading");
+        button.setAttribute("aria-busy", "true");
+
+        button.innerHTML = `
+            <span class="button-spinner" aria-hidden="true"></span>
+            <span>${loadingText}</span>
+        `;
+    } else {
+        button.innerHTML = button.dataset.originalHtml || button.innerHTML;
+
+        delete button.dataset.originalHtml;
+        button.disabled = false;
+        button.classList.remove("is-loading");
+        button.removeAttribute("aria-busy");
+    }
+}
+
   const normalize = row => ({
     id: row.id,
     user_id: row.user_id,
@@ -16,6 +42,8 @@
     category: row.category,
     description: row.description,
     location: row.location,
+    location_lat: row.location_lat === null ? null : Number(row.location_lat),
+    location_lng: row.location_lng === null ? null : Number(row.location_lng),
     severity: row.severity,
     status: row.status,
     date: row.observed_date,
@@ -23,8 +51,9 @@
     createdAt: row.created_at
   });
 
+
   async function refreshReports() {
-    const { data, error } = await client.from("reports").select("id,user_id,title,category,description,location,severity,status,observed_date,image_url,created_at,updated_at").order("created_at", { ascending: false });
+    const { data, error } = await client.from("reports").select("id,user_id,title,category,description,location,location_lat,location_lng,severity,status,observed_date,image_url,created_at,updated_at").order("created_at", { ascending: false });
     if (error) throw error;
     reportRows = (data || []).map(normalize);
     // Keep the existing sample cards while adding real public reports.
@@ -61,7 +90,11 @@
     const isSignup = byId("authNameGroup").hidden === false;
     const name = byId("authName").value.trim();
     const submit = byId("authSubmit");
-    submit.disabled = true;
+    if (submit.disabled) return;
+    setButtonLoading(
+    submit,
+    isSignup ? "Creating account..." : "Signing in..."
+    );
     try {
       let result;
       if (isSignup) {
@@ -84,7 +117,7 @@
     } catch (error) {
       toast(error.message || "Authentication failed. Please try again.");
     } finally {
-      submit.disabled = false;
+      setButtonLoading(submit, false);
     }
   }, true);
 
@@ -120,10 +153,26 @@
     const severity = byId("issueSeverity").value;
     const date = byId("issueDate").value;
     const file = byId("issuePhoto").files[0];
+    const latitudeValue = byId("locationLatitude").value;
+    const longitudeValue = byId("locationLongitude").value;
+    const locationLat = latitudeValue === "" ? null : Number(latitudeValue);
+    const locationLng = longitudeValue === "" ? null : Number(longitudeValue);
+    if (locationLat === null || locationLng === null) {
+      toast("Please select the exact issue position on the map before submitting.");
+      byId("issueLocationMap").scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    if ((locationLat === null) !== (locationLng === null) ||
+        (locationLat !== null && (!Number.isFinite(locationLat) || !Number.isFinite(locationLng) ||
+        locationLat < -90 || locationLat > 90 || locationLng < -180 || locationLng > 180))) {
+      toast("The selected map position is invalid. Please select the location again.");
+      return;
+    }
     if (date > new Date().toISOString().slice(0, 10)) { toast("The observed date cannot be in the future."); return; }
     if (file && (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 2 * 1024 * 1024)) { toast("Choose a JPG, PNG or WebP image smaller than 2 MB."); return; }
     const submit = byId("issueForm").querySelector('[type="submit"]');
-    if (submit) submit.disabled = true;
+    if (submit?.disabled) return;
+    setButtonLoading(submit, "Submitting report...");
     try {
       let imageUrl = null;
       if (file) {
@@ -133,7 +182,8 @@
         imageUrl = client.storage.from("civicfix-reports").getPublicUrl(path).data.publicUrl;
       }
       const { error } = await client.from("reports").insert({
-        user_id: session.user.id, title, category, description, location, severity,
+        user_id: session.user.id, title, category, description, location,
+        location_lat: locationLat, location_lng: locationLng, severity,
         status: "Reported", observed_date: date, image_url: imageUrl
       });
       if (error) throw error;
@@ -150,7 +200,7 @@
     } catch (error) {
       toast(error.message || "Could not submit report. Check database setup and policies.");
     } finally {
-      if (submit) submit.disabled = false;
+      setButtonLoading(submit, false);
     }
   }, true);
 
