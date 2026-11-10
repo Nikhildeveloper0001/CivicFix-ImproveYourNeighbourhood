@@ -63,6 +63,109 @@ const reportSection = document.getElementById("report");
 let toastTimer;
 
 // -----------------------------------
+// ISSUE LOCATION PICKER (Leaflet)
+// -----------------------------------
+const locationPicker = (() => {
+    const mapElement = document.getElementById("issueLocationMap");
+    const latitudeInput = document.getElementById("locationLatitude");
+    const longitudeInput = document.getElementById("locationLongitude");
+    const statusElement = document.getElementById("locationSelectionStatus");
+    const currentLocationButton = document.getElementById("useCurrentLocation");
+    let map = null;
+    let marker = null;
+
+    function updateStatus(lat, lng) {
+        latitudeInput.value = Number(lat).toFixed(7);
+        longitudeInput.value = Number(lng).toFixed(7);
+        statusElement.classList.add("is-selected");
+        statusElement.innerHTML = `<i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>Map position selected: ${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}</span>`;
+    }
+
+    function selectPosition(lat, lng, pan = false) {
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+        if (marker) {
+            marker.setLatLng([lat, lng]);
+        } else {
+            marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+            marker.on("dragend", () => {
+                const point = marker.getLatLng();
+                updateStatus(point.lat, point.lng);
+            });
+        }
+        updateStatus(lat, lng);
+        if (pan) map.setView([lat, lng], Math.max(map.getZoom(), 16));
+    }
+
+    function initialize() {
+        if (!mapElement || map) return;
+        if (typeof L === "undefined") {
+            if (statusElement) statusElement.textContent = "The map could not load. Check your internet connection and refresh the page.";
+            return;
+        }
+        map = L.map(mapElement, { scrollWheelZoom: false }).setView([28.6139, 77.2090], 12);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        map.on("click", event => selectPosition(event.latlng.lat, event.latlng.lng));
+        // The report panel starts hidden, so Leaflet needs a size refresh after it is shown.
+        window.setTimeout(() => map.invalidateSize(), 120);
+    }
+
+    function refreshSize() {
+        if (!map) initialize();
+        if (map) window.setTimeout(() => map.invalidateSize(), 180);
+    }
+
+    function useCurrentLocation() {
+        if (!navigator.geolocation) {
+            showToast("Location access is not supported by this browser. Select a point on the map instead.");
+            return;
+        }
+        const button = currentLocationButton;
+        if (button) { button.disabled = true; button.dataset.previousText = button.innerHTML; button.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Finding location...'; }
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            initialize();
+            if (!map) {
+                if (button) { button.disabled = false; button.innerHTML = button.dataset.previousText || '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location'; delete button.dataset.previousText; }
+                showToast("The map is unavailable. Refresh the page or select the location after it loads.");
+                return;
+            }
+            selectPosition(latitude, longitude, true);
+            if (button) { button.disabled = false; button.innerHTML = button.dataset.previousText || '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location'; delete button.dataset.previousText; }
+            showToast("Current location selected. Check the pin and enter the address before submitting.");
+        }, error => {
+            if (button) { button.disabled = false; button.innerHTML = button.dataset.previousText || '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location'; delete button.dataset.previousText; }
+            const messages = {
+                1: "Location permission was denied. Allow it in your browser or select a point on the map.",
+                2: "Your location could not be determined. Try again or select a point on the map.",
+                3: "Location request timed out. Try again or select a point on the map."
+            };
+            showToast(messages[error.code] || "Could not get your location. Select a point on the map.");
+        }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
+    }
+
+    function reset() {
+        if (marker && map) { map.removeLayer(marker); marker = null; }
+        if (latitudeInput) latitudeInput.value = "";
+        if (longitudeInput) longitudeInput.value = "";
+        if (statusElement) {
+            statusElement.classList.remove("is-selected");
+            statusElement.innerHTML = '<i class="fa-solid fa-circle-info" aria-hidden="true"></i> No map position selected yet.';
+        }
+    }
+
+    if (currentLocationButton) currentLocationButton.addEventListener("click", useCurrentLocation);
+    if (issueForm) issueForm.addEventListener("reset", () => window.setTimeout(reset, 0));
+
+    return { initialize, refreshSize, reset };
+})();
+
+window.civicfixLocationPicker = locationPicker;
+
+// -----------------------------------
 // 2. SAFE HTML OUTPUT
 // -----------------------------------
 
@@ -189,8 +292,12 @@ function renderIssues(list) {
                     <h3>${title}</h3>
 
                     <p class="issue-location">
-                        ${location}
+                        <i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${location}
                     </p>
+                    ${Number.isFinite(Number(issue.location_lat)) && Number.isFinite(Number(issue.location_lng)) && issue.location_lat !== null && issue.location_lng !== null ? `
+                    <a class="issue-map-link" href="https://www.openstreetmap.org/?mlat=${Number(issue.location_lat)}&mlon=${Number(issue.location_lng)}#map=17/${Number(issue.location_lat)}/${Number(issue.location_lng)}" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> View on map
+                    </a>` : ""}
 
                     <p class="issue-description">
                         ${description}
@@ -300,6 +407,7 @@ document.getElementById("resetFilters")
 // Show the report form when the user clicks a Report Issue button.
 function openReportForm() {
     reportSection.classList.add("visible");
+    if (window.civicfixLocationPicker) window.civicfixLocationPicker.refreshSize();
     reportSection.scrollIntoView({
         behavior: "smooth",
         block: "start"
