@@ -7,10 +7,14 @@
 
     <title>CivicFix | Improve Your Neighbourhood</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./1794237964644.ico">
+
 
 </head>
 
@@ -137,8 +141,8 @@
             <div class="form-card">
 
                 <div class="notice">
-                    Demo mode: reports are stored only in this browser.
-                    Submitting a report does not notify municipal authorities.
+                    Add the issue address and select its exact position on the map. Your browser will ask
+                    before sharing your current location.
                 </div>
 
                 <form id="issueForm">
@@ -173,10 +177,24 @@
                                 required></textarea>
                         </div>
 
-                        <div class="form-group">
-                            <label for="issueLocation">Location *</label>
+                        <div class="form-group full location-picker-group">
+                            <label for="issueLocation">Issue Address / Locality *</label>
                             <input class="form-control" type="text" id="issueLocation" name="location" maxlength="200"
-                                placeholder="Enter street or locality" required>
+                                placeholder="Enter street, landmark or locality" autocomplete="street-address" required>
+                            <p class="form-help">Enter a readable address and select the exact spot on the map. You can use your current location or click the map. A map pin is required.</p>
+
+                            <div class="location-map-toolbar">
+                                <button type="button" class="btn btn-primary" id="useCurrentLocation">
+                                    <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i> Use My Current Location
+                                </button>
+                                <span class="location-map-hint">Click the map or drag the marker to adjust the pin.</span>
+                            </div>
+                            <div id="issueLocationMap" class="issue-location-map" role="application" aria-label="Choose the issue location on the map"></div>
+                            <div class="location-selection-status" id="locationSelectionStatus" aria-live="polite">
+                                <i class="fa-solid fa-circle-info" aria-hidden="true"></i> No map position selected yet.
+                            </div>
+                            <input type="hidden" id="locationLatitude" name="location_lat">
+                            <input type="hidden" id="locationLongitude" name="location_lng">
                         </div>
 
                         <div class="form-group">
@@ -476,6 +494,8 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="script.js"></script>
     <script src="civicfix-supabase.js"></script>
 </body>
