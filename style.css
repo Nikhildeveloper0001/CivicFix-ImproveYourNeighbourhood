@@ -3207,3 +3207,126 @@ footer a:hover {
 #accountDetailsButton .account-avatar i[hidden] {
     display: none !important;
 }
+
+/* REAL BUTTON LOADING STATE */
+
+.btn.is-loading {
+    opacity: 0.85;
+    cursor: wait;
+    pointer-events: none;
+}
+
+.button-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: civicfix-spin 0.7s linear infinite;
+    vertical-align: -2px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+@keyframes civicfix-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ISSUE LOCATION PICKER */
+.location-picker-group {
+    min-width: 0;
+}
+
+.location-map-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 4px 0 12px;
+}
+
+.location-map-toolbar .btn {
+    min-height: 42px;
+}
+
+.location-map-hint {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.issue-location-map {
+    width: 100%;
+    height: 340px;
+    min-height: 260px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #eaf0f7;
+    z-index: 1;
+}
+
+.issue-location-map .leaflet-control-attribution {
+    font-size: 10px;
+}
+
+.location-selection-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #f8faff;
+    color: #536176;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.location-selection-status.is-selected {
+    color: #087b4c;
+    background: #effbf5;
+    border-color: #cceedd;
+}
+
+.location-selection-status i {
+    margin-top: 3px;
+}
+
+.issue-location-map .leaflet-control-zoom a {
+    color: #17243a;
+}
+
+@media (max-width: 700px) {
+    .issue-location-map {
+        height: 290px;
+    }
+
+    .location-map-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .location-map-toolbar .btn {
+        width: 100%;
+    }
+}
+
+.issue-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: -5px 0 12px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.issue-map-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
