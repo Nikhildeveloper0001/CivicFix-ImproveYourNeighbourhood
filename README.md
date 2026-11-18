@@ -157,3 +157,5 @@ GitHub: [Nikhildeveloper0001](https://github.com/Nikhildeveloper0001)
 
 *Built to make civic problem reporting simpler, more transparent, and more accessible.*
 
+⭐ If you find this project useful, consider giving it a star!
+
